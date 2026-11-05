@@ -1,0 +1,23 @@
+digraph G { graph [rankdir=LR, bgcolor="white", nodesep="0.55", ranksep="1", splines=polyline];
+node [shape=record, style="rounded,filled", fillcolor="#EAF6F7", color="#1A6A76", fontname="DejaVu Sans", fontsize=11];
+edge [color="#148B9D",fontname="DejaVu Sans",fontsize=9, arrowsize=0.65];
+specialty [label="{SPECIALTY|PK specialty_id|specialty_name}"];
+clinician [label="{CLINICIAN|PK clinician_id|FK specialty_id|clinician_name}"];
+clinic [label="{CLINIC|PK clinic_id|clinic_name}"];
+patient [label="{PATIENT|PK patient_id|patient_name|postcode}"];
+appointment [label="{APPOINTMENT|PK appointment_id|FK patient_id|FK clinician_id|FK clinic_id|date, time, status}"];
+diagnosis [label="{DIAGNOSIS|PK diagnosis_id|diagnosis_name}"];
+ad [label="{APPOINTMENT_DIAGNOSIS|PK/FK appointment_id|PK/FK diagnosis_id}"];
+prescription [label="{PRESCRIPTION|PK prescription_id|FK appointment_id|issued_on}"];
+pi [label="{PRESCRIPTION_ITEM|PK/FK prescription_id|PK item_number|FK medicine_id|dose, route, frequency}"];
+medicine [label="{MEDICINE|PK medicine_id|medicine_name}"];
+followup [label="{FOLLOW_UP|PK follow_up_id|UNIQUE FK appointment_id|due_date, priority, status}"];
+account [label="{PATIENT_ACCOUNT|PK/FK patient_id|UNIQUE db_username|password_hash}"];
+audit [label="{AUDIT_LOG|PK audit_id|FK appointment_id|event, old/new, actor}"];
+specialty->clinician [label="1  to  0..*"]; patient->appointment [label="1  to  0..*"];
+clinician->appointment [label="1  to  0..*"];clinic->appointment [label="1  to  0..*"];
+appointment->ad [label="1  to  0..*"]; diagnosis->ad [label="1  to  0..*"];
+appointment->prescription [label="1  to  0..*"]; prescription->pi [label="1  to  0..*"];
+medicine->pi [label="1  to  0..*"];appointment->followup [label="1  to  0..1"];
+patient->account [label="1  to  0..1"];appointment->audit [label="1  to  0..*"];
+}
